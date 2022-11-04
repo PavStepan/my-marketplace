@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Menu' %}
+{% endblock %}
+
+
+{% block content %}
+    <ul>
+        <p><li><a href="admin/"> {% trans 'admin panel' %} </a>
+        <p><li><a href="{% url 'shop_list' %}"> {% trans 'shop list' %} </a>
+
+    </ul>
+{% endblock %}

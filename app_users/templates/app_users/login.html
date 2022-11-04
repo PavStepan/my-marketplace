@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Page login' %}
+{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h3> {% trans 'Account is active' %} {{ request.user.username }} </h3>
+
+    {% else %}
+        <h2> {% trans 'Page login' %}: </h2>
+
+        <hr>
+
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit"> {% trans 'Login' %} </button>
+        </form>
+
+            {% trans 'or' %}
+
+        <form action="{% url 'register' %}">
+            <button> {% trans 'Sing up' %} </button>
+        </form>
+    {% endif %}
+{% endblock %}

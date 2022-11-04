@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Balance replenishment' %}
+{% endblock %}
+
+{% block content %}
+    <i> {{ msg }} </i>
+    <form action=" {% url 'balance_replenishment' pk %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"> {% trans 'Replenishment' %} </button>
+    </form>
+
+{% endblock %}

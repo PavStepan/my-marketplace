@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {{ page_user.username }}
+{% endblock %}
+
+
+{% block content %}
+
+        {% if  page_user != request.user %}
+            <h2> {% trans 'Profile' %} {{ page_user }}({{ page_user.profile.status }}) </h2>
+        {% else %}
+            <form action="update_profile/">
+                 <button> {% trans 'Edit profile' %} </button>
+            </form>
+            <form action="balance_replenishment/">
+                <p><button> {% trans 'Balance replenishment' %} </button></p>
+            </form>
+        {% endif %}
+
+
+        <p> <b> {% trans 'First name' %}: </b> {{ page_user.first_name }} </p>
+        <p> <b> {% trans 'Last name' %}: </b> {{ page_user.last_name }} </p>
+        <p> <b> {% trans 'email' %}: </b> {{ page_user.email }} </p>
+
+{% endblock %}

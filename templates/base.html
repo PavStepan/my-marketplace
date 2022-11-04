@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load i18n %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}
+                {% trans 'The title is not specified' %}
+            {% endblock %}
+        </title>
+
+    </head>
+
+    <body>
+        <form action="{% url 'set_language' %}" method="post"> {% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}">
+            <select name="language" >
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                    <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                        {{ language.name_local }}({{ language.code }})
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Ок">
+        </form>
+
+        {% if request.path != '/user/login/' %}
+            {% if request.path != '/user/register/' %}
+                {% if request.user.is_authenticated %}
+                    <p>
+                    {% if request.path == '/' %}
+                        {% trans 'Hello' %}
+                    {% else %}
+                        {% trans 'Profile' %}:
+                    {% endif %}
+                        <a href="/user/profile/{{ request.user.id }}"> {{ request.user.username }} </a>
+                        ({{ request.user.profile.status }})</p>
+                        <p> {% trans 'Balance' %}: <b> {{ request.user.profile.balance }} </b> </p>
+                <form action="{% url 'logout' %}">
+                   <p> <button> {% trans 'Logout' %} </button></p>
+                </form>
+
+                <form action="{% url 'basket' request.user.id %}">
+                   <p> <button> {% trans 'Basket' %} </button></p>
+                </form>
+
+                {% else %}
+                    <form action="{% url 'login' %}">
+                        <p> {% trans 'To enter your personal account, click' %} <button> {% trans 'Login' %} </button> </p>
+                    </form>
+                    <form action="{% url 'register' %}">
+                        <p> {% trans 'To register, click' %} <button> {% trans 'Registration' %} </button></p>
+                    </form>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+
+        {% if request.path != '/' %}
+            <form action="{% url 'menu' %}">
+                <p> <button> <-- {% trans 'Menu' %} </button></p>
+            </form>
+        {% endif %}
+        <hr>
+        {% block content %}
+            {% trans 'Content in development' %}
+        {% endblock %}
+
+        <hr>
+
+        <form action="{{request.META.HTTP_REFERER}}">
+                <p> <button> <- {% trans 'Back' %} </button></p>
+        </form>
+
+    </body>
+</html>

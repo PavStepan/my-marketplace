@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'List shop' %}
+{% endblock %}
+
+
+{% block content %}
+    {% if shop_list.count == 0 %}
+        <h2> {% trans 'the list of stores is empty' %} </h2>
+    {% else %}
+        {{ msg }}
+        {% for shop in shop_list %}
+            <p> <details>
+                <summary >  <b> {{ shop.name }} </b> </summary>
+                     {% if shop %}
+                        <table border="1">
+                            <tbody>
+                                <tr>
+                                    <td> {% trans 'Name' %} </td>
+                                    <td> {% trans 'Number count' %} </td>
+                                    <td> {% trans 'Price(RU)' %} </td>
+                                    <td> </td>
+
+                                </tr>
+                                    {% for item in shop.sell_item.all %}
+                                        <tr>
+                                            <td> {{ item.name }}
+                                            <td> {{ item.number_count }}
+                                            <td> {{ item.price }}
+                                            <td> <form method="get" action="{% url 'shop_list' %}">
+                                                    <input type="number" size="1" name="num" min="1" max="{{ item.number_count }}" value="1">
+                                                    <button type="submit" name="Buy_button" value="buy shop{{ shop.id }} item{{ item.id }}"> {% trans 'In basket' %} </button>
+                                                </form>
+                                        </tr>
+                                    {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+            </details>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
