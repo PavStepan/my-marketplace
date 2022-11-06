@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block content %}
-    <i> {{ msg }} </i>
     <form action=" {% url 'balance_replenishment' pk %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}

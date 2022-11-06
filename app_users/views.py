@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, UpdateView
 from app_users.forms import RegisterForm, BalanceReplenishmentForm, UpdateProfileForm
@@ -103,12 +104,7 @@ class BalanceReplenishmentView(AuthenticatedUserPermissionsMixin, View):
                 msg = _('Invalid value')
             else:
                 self.request.user.profile.update_balance(balance)
-                msg = _('Balance replenished successfully')
-            return render(request,
-                          template_name='app_users/balance_replenishment.html',
-                          context={'form': form_balance,
-                                   'pk': pk,
-                                   'msg': msg})
+            return redirect(reverse_lazy('profile', kwargs={'pk': pk}))
 
         return render(request,
                       template_name='app_users/balance_replenishment.html',
@@ -116,7 +112,3 @@ class BalanceReplenishmentView(AuthenticatedUserPermissionsMixin, View):
                                'pk': pk})
 
 
-class BasketView(View):
-
-    def get(self, request, *args, **kwargs):
-        return render(request, template_name='app_users/basket.html')

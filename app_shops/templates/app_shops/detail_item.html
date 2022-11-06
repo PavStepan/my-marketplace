@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {{ item.name }}
+{% endblock %}
+
+{% block content %}
+
+    <h1> {{ item.name }}</h1>
+    <h2>{% trans 'Description' %}: </h2> {{ item.description }}
+
+    <ul>
+        <li> {% trans 'Number count' %}: {{ item.number_count }}
+        <li> {% trans 'Price' %}: {{ item.price }}
+    </ul>
+
+    <form action="{% url 'cart_add' item.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Add to cart">
+    </form>
+
+{% endblock %}

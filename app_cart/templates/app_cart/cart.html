@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Cart' %}
+{% endblock %}
+
+{% block content %}
+    {% for item in cart %}
+        {% with product=item.product %}
+<a href="{{ product.get_absolute_url }}">  </a>
+        {% endwith %}
+
+{% endblock %}

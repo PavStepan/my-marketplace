@@ -44,8 +44,8 @@
                    <p> <button> {% trans 'Logout' %} </button></p>
                 </form>
 
-                <form action="{% url 'basket' request.user.id %}">
-                   <p> <button> {% trans 'Basket' %} </button></p>
+                <form action="{% url 'cart_detail' %}">
+                   <p> <button> {% trans 'Cart' %} </button></p>
                 </form>
 
                 {% else %}

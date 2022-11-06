@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_shops.urls')),
     path('user/', include('app_users.urls')),
+    path('cart/', include('app_cart.urls')),
     path('i18n', include('django.conf.urls.i18n'))
 ]

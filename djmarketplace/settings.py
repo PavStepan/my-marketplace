@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_users.apps.AppUsersConfig',
-    'app_shops.apps.AppShopsConfig'
+    'app_shops.apps.AppShopsConfig',
+    'app_cart',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,5 @@ SESSION_COOKIE_AGE = 30 * 24 * 60 * 60
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CART_SESSION_ID = 'cart'

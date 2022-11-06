@@ -3,7 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 from django.db import transaction
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from app_shops.models import SellItem
 
 
@@ -27,6 +28,17 @@ class Profile(models.Model):
     @transaction.atomic
     def update_balance(self, balance):
         Profile.objects.filter(pk=self.pk).update(balance=self.balance+balance)
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class BuyItem(models.Model):
