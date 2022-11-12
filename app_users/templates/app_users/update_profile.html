@@ -9,7 +9,7 @@
 {% block content %}
     <h2> {% trans 'Edit profile' %} {{ user.username }}</h2>
     <i> {{ msg }} </i>
-    <form action="{% url 'update_profile' pk %}" method="post">
+    <form action="{% url 'update_profile' user.id %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit"> {% trans 'Save' %} </button>

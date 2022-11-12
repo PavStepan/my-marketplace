@@ -6,9 +6,51 @@
 {% endblock %}
 
 {% block content %}
-    {% for item in cart %}
-        {% with product=item.product %}
-<a href="{{ product.get_absolute_url }}">  </a>
-        {% endwith %}
+    <h2> {% trans 'Cart' %}: </h2>
+    <a href="{% url 'shop_list' %}" class="button light"> Continue shopping </a>
+    <hr>
+    {% if cart %}
+        {% for item in cart %}
+
+            {% with product=item.product %}
+
+                <a href="{{ product.get_absolute_url }}"> {{ product.name }}  </a>
+                        {% if product.number_count <= 0 %}
+                            <b>({% trans 'Out of stock' %})</b>
+                        {% endif %}
+                        <form action="{% url 'cart_detail' %}" method="post">
+                            <ul>
+                                <li> {% trans 'Quantity' %}({% trans 'in stock' %} {{ product.number_count }}): {{ item.quantity }} {% csrf_token %} {{ form.quantity }} {{ form.update }}
+                                <button name="edit_quantity" value="{{ product.id }}"> {% trans 'Ok' %} </button>
+
+                                <li>{% trans 'Price' %}: {{ product.price }}
+                                <li> {% trans 'Total price' %}: {{ item.total_price  }}
+                            </ul>
+
+                        </form>
+
+                <form action="{% url 'cart_remove' product.id %}">
+                    <p> <button> {% trans 'delete' %} </button></p>
+                </form>
+
+
+
+
+
+        <hr>
+            {% endwith %}
+        {% endfor %}
+            <p> {% trans 'Total' %}: {{ cart.get_total_price }} </p>
+            {{ msg }}
+
+            <form action="{% url 'cart_detail' %}">
+                <p> <button name="buy" value="buy_all"> {% trans 'Pay for the order' %} </button>
+                    {% trans 'Bonus point' %}:<input type="number" size="1" name="bonus" min="0" max="{{request.user.profile.bonus_points}}" value="0"></p>
+            </form>
+
+
+    {% else %}
+        <h3> {% trans 'The cart is empty' %} </h3>
+    {% endif %}
 
 {% endblock %}

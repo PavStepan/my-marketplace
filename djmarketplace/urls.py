@@ -15,11 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import debug_toolbar
+from django.urls import path
+
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_shops.urls')),
     path('user/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
-    path('i18n', include('django.conf.urls.i18n'))
+    path('i18n', include('django.conf.urls.i18n')),
+    path('__debug__/', include(debug_toolbar.urls)),
+    path('sentry-debug/', trigger_error),
 ]

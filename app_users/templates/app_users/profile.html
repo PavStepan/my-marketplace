@@ -11,6 +11,10 @@
         {% if  page_user != request.user %}
             <h2> {% trans 'Profile' %} {{ page_user }}({{ page_user.profile.status }}) </h2>
         {% else %}
+
+            <form action="history/">
+                 <button> {% trans 'History' %} </button>
+            </form>
             <form action="update_profile/">
                  <button> {% trans 'Edit profile' %} </button>
             </form>
@@ -23,5 +27,6 @@
         <p> <b> {% trans 'First name' %}: </b> {{ page_user.first_name }} </p>
         <p> <b> {% trans 'Last name' %}: </b> {{ page_user.last_name }} </p>
         <p> <b> {% trans 'email' %}: </b> {{ page_user.email }} </p>
+        <p> <b> {% trans 'used cash' %}: </b> {{ page_user.profile.used_cash }} </p>
 
 {% endblock %}

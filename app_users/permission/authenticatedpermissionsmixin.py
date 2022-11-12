@@ -2,6 +2,7 @@ from django.http import Http404
 
 
 class AuthenticatedUserPermissionsMixin:
+    """ Класс пермишен для доступа только авторизированному пользователю"""
 
     def has_permissions(self):
         if self.request.user.is_superuser:
@@ -15,6 +16,7 @@ class AuthenticatedUserPermissionsMixin:
 
 
 class UserPermissionsMixin:
+    """ Класс пермишен для доступа создавшему запись пользователю"""
 
     def has_permissions(self):
         if self.request.user.is_superuser:

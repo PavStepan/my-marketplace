@@ -39,14 +39,17 @@
                     {% endif %}
                         <a href="/user/profile/{{ request.user.id }}"> {{ request.user.username }} </a>
                         ({{ request.user.profile.status }})</p>
-                        <p> {% trans 'Balance' %}: <b> {{ request.user.profile.balance }} </b> </p>
+                        <p> {% trans 'Balance' %}: <b> {{ request.user.profile.balance }} </b>
+                            ({% trans 'bonus' %} {{ request.user.profile.bonus_points }} )</p>
                 <form action="{% url 'logout' %}">
                    <p> <button> {% trans 'Logout' %} </button></p>
                 </form>
 
-                <form action="{% url 'cart_detail' %}">
-                   <p> <button> {% trans 'Cart' %} </button></p>
-                </form>
+                {% if request.path != '/cart/' %}
+                    <form action="{% url 'cart_detail' %}">
+                       <p> <button> {% trans 'Cart' %} </button></p>
+                    </form>
+                {% endif %}
 
                 {% else %}
                     <form action="{% url 'login' %}">

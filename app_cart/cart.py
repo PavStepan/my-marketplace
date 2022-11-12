@@ -1,7 +1,8 @@
+import copy
 from decimal import Decimal
-
 from djmarketplace import settings
 from app_shops.models import SellItem
+
 
 class Cart(object):
 
@@ -29,12 +30,12 @@ class Cart(object):
 
     def save(self):
         """ Метод для сохранения записи о добавлении товара в корзину """
+
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
 
     def remove(self, product):
         """ Метод для удаления записи из корзины """
-
         product_id = str(product.id)
         if product_id in self.cart:
             del self.cart[product_id]
@@ -42,13 +43,16 @@ class Cart(object):
 
     def __iter__(self):
         """ Метод для итерации по списку товаров """
-        product_ids = self.cart.keys()
+
+        cart = copy.deepcopy(self.cart)
+
+        product_ids = cart.keys()
         products = SellItem.objects.filter(id__in=product_ids)
 
         for product in products:
-            self.cart[str(product.id)]['product'] = product
+            cart[str(product.id)]['product'] = product
 
-        for item in self.cart.values():
+        for item in cart.values():
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
             yield item

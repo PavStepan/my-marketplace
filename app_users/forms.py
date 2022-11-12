@@ -13,6 +13,7 @@ class RegisterForm(UserCreationForm):
 
 
 class UpdateProfileForm(forms.ModelForm):
+    """ Класс формы редактирования профиля """
 
     class Meta:
         model = User

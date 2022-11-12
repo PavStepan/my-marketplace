@@ -9,12 +9,11 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import logging
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -26,7 +25,6 @@ SECRET_KEY = '3=mgazhhbe^o3gw3@%@(opk$7i==a^d2no=m0j-zmrl5(i9#(_'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -40,6 +38,7 @@ INSTALLED_APPS = [
     'app_users.apps.AppUsersConfig',
     'app_shops.apps.AppShopsConfig',
     'app_cart',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'djmarketplace.urls'
@@ -75,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djmarketplace.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -85,7 +84,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -105,7 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -120,8 +117,8 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
-            ('en', 'English'),
-            ('ru', 'Русский'),
+    ('en', 'English'),
+    ('ru', 'Русский'),
 ]
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locate'), ]
@@ -140,3 +137,45 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CART_SESSION_ID = 'cart'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+            'file': {
+                'format': '[{levelname}-{asctime}-{module}] {message}',
+                'style': '{',
+            }},
+
+    'handlers': {'file': {'class': 'logging.FileHandler',
+                          'filename': 'errors_log.log',
+                          'formatter': 'file'}},
+
+    'root': {'handlers': ['file'],
+             'level': 'INFO',
+             'propagate': True}
+            }
+
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://114149852f394610beb497623d7b0dd3@o4504135051509760.ingest.sentry.io/4504135061209088",
+    integrations=[
+        DjangoIntegration(),
+    ],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)

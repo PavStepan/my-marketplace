@@ -1,8 +1,5 @@
 from django.contrib import admin
-from app_users.models import Profile, BuyItem
-
-
-# Register your models here.
+from app_users.models import Profile
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -12,4 +9,5 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile, ProfileAdmin)
+
 

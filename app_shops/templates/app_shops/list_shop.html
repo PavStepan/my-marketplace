@@ -7,6 +7,9 @@
 
 
 {% block content %}
+    <form action="{% url 'statistic_list' %}">
+       <p> <button> {% trans 'Statistic list' %} </button></p>
+    </form>
     {% if shop_list.count == 0 %}
         <h2> {% trans 'the list of stores is empty' %} </h2>
     {% else %}
@@ -23,6 +26,23 @@
                     {% endif %}
             </details>
         {% endfor %}
+<br>
+        <div class="pagination">
+            <span class="step-links">
+                {% if shop_list.has_previous %}
+                    <a href="?page=1">&laquo; {% trans 'first' %}</a>
+                    <a href="?page={{ shop_list.previous_page_number }}">{% trans 'previous' %}</a>
+                {% endif %}
 
+                <span class="current">
+                    {% trans 'Page' %} {{ shop_list.number }} of {{ shop_list.paginator.num_pages }}.
+                </span>
+
+                {% if shop_list.has_next %}
+                    <a href="?page={{ shop_list.next_page_number }}">{% trans 'next' %}</a>
+                    <a href="?page={{ shop_list.paginator.num_pages }}">{% trans 'last' %} &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     {% endif %}
 {% endblock %}
